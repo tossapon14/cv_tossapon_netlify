@@ -31,7 +31,8 @@
                 <h2>DEVELOPERS</h2>
                 <p id="description" class="description"></p>
                 <div class="buttons">
-                    <a href="./resume.pdf" target="_blank" class="btn-get-started">Documentation &gt;</a>
+                    <a href="./resume.pdf" id="resume-link" target="_blank" class="btn-get-started">Documentation
+                        &gt;</a>
                     <a href="#code-skill" class="bnt-signin-main">Getstart &gt;</a>
                 </div>
             </div>
@@ -211,7 +212,8 @@
                     Work experience
                 </h1>
                 <div class="display-slider">
-                    <a class="github-link" target="_blank" href="https://github.com/tossapon14">Github link</a>
+                    <a class="github-link" id="github" target="_blank" href="https://github.com/tossapon14">Github
+                        link</a>
                 </div>
                 <div class="container-work-flex">
                     <div class="card-work">
@@ -615,6 +617,8 @@
     <script>
         const name = document.getElementById('name');
         const description = document.getElementById('description');
+        const resume_link = document.getElementById('resume-link');
+        const github_link = document.getElementById('github');
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const language = urlParams.get('language')
@@ -672,19 +676,29 @@
                         btn_image_link[i].innerText = lang == "en" ? "IMAGES" : "รูปผลงาน"
                     });
                 }).catch(error => console.log(error));
-            const myIP = getIPSavemongodb();
+            const myIP = getIPAndSavemongodb("Home");
         });
-        async function getIPSavemongodb() {
+        resume_link.addEventListener('click', () => {
+            getIPAndSavemongodb("Resume");
+        }
+        );
+        github_link.addEventListener('click', () => {
+            getIPAndSavemongodb("Github");
+        }
+        );
+        async function getIPAndSavemongodb(pageName = "Home") {
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
                 const payload = await response.json();
-                payload.pageName = "home";
+                payload.pageName = pageName;
+                // console.log('IP Address:', payload.ip, 'Page:', payload.pageName);
+
                 const responseMongo = await fetch("/.netlify/functions/savemongodb", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload),
                 });
-                
+
             } catch (error) {
                 console.error('Error tor:', error);
             }

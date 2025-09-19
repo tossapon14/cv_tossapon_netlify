@@ -44,7 +44,7 @@ const linkObject = [
 
     },
     {
-        name_page: "n-h",
+        name_page: "n-health",
         v1: "hp0.png",
         v2: "hp1.png",
         v3: "hp2.png",
